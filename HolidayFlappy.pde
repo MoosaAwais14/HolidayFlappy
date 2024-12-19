@@ -26,9 +26,27 @@ void setup() {
     yCoords[i] = random(height);
     yMove[i] = random(2, 5);
   }
+}
 
-  start = new Start();
-  go = new GameOver();
+void display() {
+  background(#86C691); // Light blue background
+  textSize(64);
+  fill(#298B3A); // Black text
+  text("Welcome to Winter Flappy!", 500, 350);
+
+  textSize(32);
+  fill(#1E712C);
+  text("Click to start", 750, 450);
+}
+
+void gO() {
+  background(0); // Light blue background
+  textSize(64);
+  fill(#E33939); // Black text
+  text("Game Over", 600, 350);
+
+  textSize(32);
+  fill(#D87F7F);
 }
 
 void mouseClicked() {
@@ -39,14 +57,14 @@ void mouseClicked() {
 
 void keyPressed() {
   if (key == ' ') {
-    sledY-=70;
+    sled.yVel=-10;
   }
 }
 
 void draw() {
 
   if (clicked == false) {
-    start.display();
+    display();
   } else {
     rect(-1, -1, width + 1, height + 1);
     fill(255);
@@ -65,28 +83,39 @@ void draw() {
       if (xCoords[i] < 0) {
         xCoords[i] = width;
       }
-      if (sled.xVal + 100 > p1.pipe_x && sled.xVal < p1.pipe_x + 27 &&
-        sledY + 50 > p1.p1 + p1.ran && sledY < p1.p1 + p1.ran + 26) {
-        go.gO();
-        noLoop();
+
+      if ((sled.xVal + 150) >= p1.pipe_x && (sled.xVal) <= (p1.pipe_x+140)) {
+        if (((sled.yVal + 10)>= (p1.pipe_y1)) || ((sled.yVal+140) <=(p2.pipe_y1))) {
+          noLoop();
+          gO();
+        }
       }
+      //if (sled.xVal + 100 > p1.pipe_x && sled.xVal < p1.pipe_x + 27 &&
+      //  sledY + 50 > p1.p1 + p1.ran && sledY < p1.p1 + p1.ran + 26) {
+      //  gO();
+      //  noLoop();
+      //}
 
       // Check for collision with the second pipe (p2)
-      if (sled.xVal + 100 > p2.pipe_x && sled.xVal < p2.pipe_x + 27 &&
-        sledY + 50 > p2.p1 + p2.ran && sledY < p2.p1 + p2.ran + 26) {
-        go.gO();
-        noLoop();
-      }
-
-      if (sledY > height) {
-        go.gO();
-        noLoop();
-      }
     }
+
+    //if ((sled.xVal >= p1.pipe_x && sled.xVal <= p1.pipe_x + 125) && sled.yVal <= ((p1.pipe_y1+46) - p1.ran)) {
+    //  gO();
+    //  System.out.println("hey man");
+    //  noLoop();
+    //}
+
+    //if ((sled.xVal >= p1.pipe_x && sled.xVal <= p1.pipe_x + 125) && (sled.yVal >= p1.pipe_y2 + p1.ran)) {
+    //  gO();
+    //  System.out.println("hey man");
+    //  noLoop();
+    //}
+
     p1.upd();
     p2.upd();
 
-    sledY+=5;
-    sled.update(sledY);
+    //sledY+=5;
+    sled.update();
+    sled.display();
   }
 }
